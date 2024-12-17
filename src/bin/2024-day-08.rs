@@ -13,11 +13,11 @@ fn main() {
 type AntinodesFunction = fn(&mut Vec<Vec<char>>, (usize, usize), (usize, usize)) -> usize;
 
 fn part1(input: &str) -> usize {
-    return count_antinodes(&input, record_antinodes_part1, false);
+    count_antinodes(input, record_antinodes_part1, false)
 }
 
 fn part2(input: &str) -> usize {
-    return count_antinodes(&input, record_antinodes_part2, true);
+    count_antinodes(input, record_antinodes_part2, true)
 }
 
 fn count_antinodes(
@@ -25,7 +25,7 @@ fn count_antinodes(
     record_antinodes: AntinodesFunction,
     include_current: bool,
 ) -> usize {
-    let grid = as_grid_of_char(&input);
+    let grid = as_grid_of_char(input);
 
     let mut antenna_map: HashMap<char, Vec<(usize, usize)>> = HashMap::new();
 
@@ -39,7 +39,7 @@ fn count_antinodes(
             if grid[r][c] != '.' {
                 antenna_map
                     .entry(grid[r][c])
-                    .or_insert_with(Vec::new)
+                    .or_default()
                     .push((r, c));
             }
         }
@@ -60,7 +60,7 @@ fn count_antinodes(
         }
     }
 
-    return antinodes;
+    antinodes
 }
 
 fn record_antinodes_part1(
@@ -91,7 +91,7 @@ fn record_antinodes_part1(
         grid[ant2.0 as usize][ant2.1 as usize] = '#';
     }
 
-    return antinodes;
+    antinodes
 }
 
 fn record_antinodes_part2(
@@ -123,7 +123,7 @@ fn record_antinodes_part2(
         }
     }
 
-    return antinodes;
+    antinodes
 }
 
 #[test]
@@ -140,7 +140,7 @@ fn test_part1_sample() {
     .........A..
     ............
     ............"#;
-    let result = part1(&input);
+    let result = part1(input);
     assert_eq!(result, 14);
 }
 
@@ -158,6 +158,6 @@ fn test_part2_sample() {
     .........A..
     ............
     ............"#;
-    let result = part2(&input);
+    let result = part2(input);
     assert_eq!(result, 34);
 }

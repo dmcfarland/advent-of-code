@@ -1,5 +1,3 @@
-use std::u64;
-
 use advent_of_code::*;
 use regex::Regex;
 
@@ -28,11 +26,11 @@ fn part1(input: &str) -> String {
             .collect::<Vec<u64>>(),
     );
 
-    return run_program(reg_a, reg_b, reg_c, &prog)
+    run_program(reg_a, reg_b, reg_c, &prog)
         .iter()
         .map(|f| f.to_string())
         .collect::<Vec<String>>()
-        .join(",");
+        .join(",")
 }
 
 fn run_program(mut reg_a: u64, mut reg_b: u64, mut reg_c: u64, prog: &Vec<u64>) -> Vec<u64> {
@@ -44,7 +42,7 @@ fn run_program(mut reg_a: u64, mut reg_b: u64, mut reg_c: u64, prog: &Vec<u64>) 
         let operand = prog[next + 1];
 
         let combi = match operand {
-            0 | 1 | 2 | 3 => operand,
+            0..=3 => operand,
             4 => reg_a,
             5 => reg_b,
             6 => reg_c,
@@ -60,8 +58,8 @@ fn run_program(mut reg_a: u64, mut reg_b: u64, mut reg_c: u64, prog: &Vec<u64>) 
         // 6 bdv a = b / cm^2
         // 7 bdv a = c / cm^2
         match operator {
-            0 => reg_a = reg_a / 2_u64.pow(combi.try_into().unwrap()),
-            1 => reg_b = reg_b ^ operand,
+            0 => reg_a /= 2_u64.pow(combi.try_into().unwrap()),
+            1 => reg_b ^= operand,
             2 => reg_b = combi % 8,
             3 => {
                 if reg_a != 0 {
@@ -69,7 +67,7 @@ fn run_program(mut reg_a: u64, mut reg_b: u64, mut reg_c: u64, prog: &Vec<u64>) 
                     continue;
                 }
             }
-            4 => reg_b = reg_b ^ reg_c,
+            4 => reg_b ^= reg_c,
             5 => output.push(combi % 8),
             6 => reg_b = reg_a / 2_u64.pow(combi.try_into().unwrap()),
             7 => reg_c = reg_a / 2_u64.pow(combi.try_into().unwrap()),
@@ -78,7 +76,7 @@ fn run_program(mut reg_a: u64, mut reg_b: u64, mut reg_c: u64, prog: &Vec<u64>) 
         next += 2
     }
 
-    return output;
+    output
 }
 
 fn part2(input: &str) -> u64 {
@@ -122,7 +120,7 @@ fn part2(input: &str) -> u64 {
     if result == prog {
         return i - 1;
     }
-    return 0;
+    0
 }
 
 fn matching<T: PartialEq>(vec1: &Vec<T>, vec2: &Vec<T>) -> usize {

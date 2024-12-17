@@ -15,11 +15,11 @@ fn main() {
 }
 
 fn part1(input: &str) -> u16 {
-    return part_x(input).0;
+    part_x(input).0
 }
 
 fn part2(input: &str) -> u16 {
-    return part_x(input).1;
+    part_x(input).1
 }
 
 fn part_x(input: &str) -> (u16, u16) {
@@ -33,14 +33,13 @@ fn part_x(input: &str) -> (u16, u16) {
             if let Some((before, after)) = line.split_once('|') {
                 let value = before.trim().parse::<u16>().unwrap();
                 let key = after.trim().parse::<u16>().unwrap();
-                order.entry(key).or_insert_with(Vec::new).push(value);
+                order.entry(key).or_default().push(value);
             }
         } else {
             let mut ok = true;
             if let Ok(numbers) = line
                 .trim()
                 .split(',')
-                .into_iter()
                 .map(|v| v.parse::<u16>())
                 .collect::<Result<Vec<u16>, _>>()
             {
@@ -74,7 +73,7 @@ fn part_x(input: &str) -> (u16, u16) {
         }
     }
 
-    return (counter, invalid_counter);
+    (counter, invalid_counter)
 }
 
 #[test]

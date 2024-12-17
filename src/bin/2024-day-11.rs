@@ -16,7 +16,6 @@ fn part1(input: &str, blinks: u32) -> u64 {
         .next()
         .unwrap()
         .split(' ')
-        .into_iter()
         .map(|v| v.parse::<u64>())
         .collect::<Result<Vec<u64>, _>>()
         .unwrap();
@@ -26,7 +25,7 @@ fn part1(input: &str, blinks: u32) -> u64 {
         lookup.insert(i, build_lookup(vec![i], 40));
     }
 
-    return count_stones(stones, blinks, lookup);
+    count_stones(stones, blinks, lookup)
 }
 
 fn build_lookup(initial_stones: Vec<u64>, blinks: u32) -> Vec<u64> {
@@ -38,7 +37,7 @@ fn build_lookup(initial_stones: Vec<u64>, blinks: u32) -> Vec<u64> {
         // println!("{:?} || {} -- {}", stonez, stonez.len(), i);
     }
     println!("lookup: {:?}", initial_stones);
-    return num_stones;
+    num_stones
 }
 
 fn count_stones(initial_stones: Vec<u64>, blinks: u32, lookup: HashMap<u64, Vec<u64>>) -> u64 {
@@ -60,7 +59,7 @@ fn count_stones(initial_stones: Vec<u64>, blinks: u32, lookup: HashMap<u64, Vec<
         // println!("{:?} || {} -- {} ({})", stonez, stonez.len(), i, total);
         println!("blink: {}", i);
     }
-    return total + (stonez.len() as u64);
+    total + (stonez.len() as u64)
 }
 
 fn apply_rule(f: u64) -> Vec<u64> {
@@ -90,7 +89,7 @@ fn apply_rule(f: u64) -> Vec<u64> {
 #[test]
 fn test_part1_b() {
     let input = r#"125 17"#;
-    let result = part1(&input, 25);
+    let result = part1(input, 25);
     println!("Counts {:?}", result);
     assert_eq!(result, 55312);
 }

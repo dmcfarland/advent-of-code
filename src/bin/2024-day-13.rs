@@ -15,9 +15,9 @@ fn part1(input: &str) -> u32 {
     )
     .unwrap();
 
-    re.captures(input).unwrap()
+    re.captures(input).unwrap();
 
-    return 0;
+    0
 }
 
 #[test]
@@ -34,7 +34,7 @@ p=9,3 v=2,3
 p=7,3 v=-1,2
 p=2,4 v=2,-3
 p=9,5 v=-3,-3"#;
-    let result = part1(&input);
+    let result = part1(input);
     println!("Counts {:?}", result);
     assert_eq!(result, 480);
 }

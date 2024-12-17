@@ -16,7 +16,7 @@ fn main() {
 fn part1(input: &str) -> usize {
     let readings = as_rows_of_u32(input);
 
-    return readings
+    readings
         .iter()
         .filter(|reading| {
             let deltas: Vec<u32> = reading
@@ -30,7 +30,7 @@ fn part1(input: &str) -> usize {
                 && *min >= 1
                 && *max <= 3
         })
-        .count();
+        .count()
 }
 
 fn part2(lines: Vec<&str>) -> u16 {
@@ -38,7 +38,6 @@ fn part2(lines: Vec<&str>) -> u16 {
     for line in lines {
         let readings = line
             .split(" ")
-            .into_iter()
             .map(|num| num.parse::<i32>())
             .collect::<Result<Vec<i32>, _>>()
             .expect("Should have been able to parse the numbers");
@@ -50,9 +49,9 @@ fn part2(lines: Vec<&str>) -> u16 {
             let mut m = readings.clone();
             m.remove(i);
             let base_order = if m[0] > m[1] {
-                DIRECTION::DESC
+                Direction::Desc
             } else {
-                DIRECTION::ASC
+                Direction::Asc
             };
 
             for i in 0..m.len() - 1 {
@@ -72,29 +71,29 @@ fn part2(lines: Vec<&str>) -> u16 {
             safe_count += 1;
         }
     }
-    return safe_count;
+    safe_count
 }
 
 #[derive(PartialEq, Debug, Copy, Clone)]
-enum DIRECTION {
-    ASC,
-    DESC,
+enum Direction {
+    Asc,
+    Desc,
 }
 
-fn has_breach(a: i32, b: i32, base_order: DIRECTION) -> bool {
+fn has_breach(a: i32, b: i32, base_order: Direction) -> bool {
     if (a - b).abs() > 3 {
         return true;
     }
     if (a - b).abs() < 1 {
         return true;
     }
-    if (a > b) && base_order != DIRECTION::DESC {
+    if (a > b) && base_order != Direction::Desc {
         return true;
     }
-    if (a < b) && base_order != DIRECTION::ASC {
+    if (a < b) && base_order != Direction::Asc {
         return true;
     }
-    return false;
+    false
 }
 
 #[test]

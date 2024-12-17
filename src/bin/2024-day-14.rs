@@ -26,17 +26,17 @@ impl Robot {
     fn move_location(&mut self, width: u32, height: u32) {
         let mut new_x: i32 = self.x as i32 + self.vx;
         if new_x < 0 {
-            new_x = width as i32 + new_x;
+            new_x += width as i32;
         } else if new_x >= width as i32 {
-            new_x = new_x - width as i32;
+            new_x -= width as i32;
         }
         self.x = new_x as u32;
 
         let mut new_y: i32 = self.y as i32 + self.vy;
         if new_y < 0 {
-            new_y = height as i32 + new_y;
+            new_y += height as i32;
         } else if new_y >= height as i32 {
-            new_y = new_y - height as i32;
+            new_y -= height as i32;
         }
         self.y = new_y as u32;
     }
@@ -79,7 +79,7 @@ fn part1(input: &str, elapsed_seconds: u32, width: u32, height: u32) -> u64 {
 
     println!("{:?}", quadrants);
 
-    return quadrants.0 * quadrants.1 * quadrants.2 * quadrants.3;
+    quadrants.0 * quadrants.1 * quadrants.2 * quadrants.3
 }
 
 fn part2(input: &str, elapsed_seconds: u32, width: u32, height: u32) -> u64 {
@@ -105,7 +105,7 @@ fn part2(input: &str, elapsed_seconds: u32, width: u32, height: u32) -> u64 {
         }
     }
 
-    return 0;
+    0
 }
 
 fn is_tree(robots: &Vec<Robot>, width: u32, height: u32) -> bool {
@@ -129,7 +129,7 @@ fn is_tree(robots: &Vec<Robot>, width: u32, height: u32) -> bool {
             }
         }
     }
-    return true;
+    true
 }
 
 #[test]
@@ -146,7 +146,7 @@ p=9,3 v=2,3
 p=7,3 v=-1,2
 p=2,4 v=2,-3
 p=9,5 v=-3,-3"#;
-    let result = part1(&input, 100, 11, 7);
+    let result = part1(input, 100, 11, 7);
     println!("Counts {:?}", result);
     assert_eq!(result, 12);
 }

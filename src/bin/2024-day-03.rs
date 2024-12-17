@@ -21,11 +21,11 @@ fn count_segments(input: &str) -> u32 {
         let seg = left.parse::<u32>().unwrap() * right.parse::<u32>().unwrap();
         total += seg;
     }
-    return total;
+    total
 }
 
 fn part1(input: &str) -> u32 {
-    return count_segments(input);
+    count_segments(input)
 }
 
 fn part2(input: &str) -> u32 {
@@ -35,7 +35,7 @@ fn part2(input: &str) -> u32 {
     let re = Regex::new(r"(?m)don't\(\).*?(do\(\)|$)").unwrap();
     let input_without_donot_blocks = re.replace_all(&input_without_newlines, "").to_string();
 
-    return count_segments(&input_without_donot_blocks);
+    count_segments(&input_without_donot_blocks)
 }
 
 #[test]
@@ -48,6 +48,6 @@ fn test_part1_sample() {
 #[test]
 fn test_part2_sample() {
     let input = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
-    let result = part2(&input);
+    let result = part2(input);
     assert_eq!(result, 48);
 }

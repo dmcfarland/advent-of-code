@@ -96,7 +96,7 @@ fn part1(input: &str) -> u16 {
 
     // print_grid(&overlay_grid);
 
-    return count;
+    count
 }
 
 fn part2(input: &str) -> u16 {
@@ -128,7 +128,7 @@ fn part2(input: &str) -> u16 {
             }
         }
     }
-    return count;
+    count
 }
 
 #[test]

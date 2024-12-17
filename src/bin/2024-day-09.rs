@@ -17,12 +17,12 @@ fn part2(input: &str) -> u64 {
     let mut pointers: Vec<isize> = Vec::new();
     let mut file_sizes: HashMap<usize, u32> = HashMap::new();
     let mut space_sizes: Vec<(usize, u32)> = Vec::new();
-    for e in disk_map.chars().into_iter() {
+    for e in disk_map.chars() {
         let blocks = e.to_digit(10).unwrap();
         if is_file {
             file_sizes.insert(file_id as usize, blocks);
         } else {
-            space_sizes.push((pointers.len() as usize, blocks));
+            space_sizes.push((pointers.len(), blocks));
         }
         for _ in 0..blocks {
             if is_file {
@@ -43,7 +43,7 @@ fn part2(input: &str) -> u64 {
 
     while 0 < right {
         if pointers[right] != -1 {
-            let f_id = pointers[right as usize] as usize;
+            let f_id = pointers[right] as usize;
             let file_size = file_sizes[&f_id];
             if f_id < file_id_watermark {
                 file_id_watermark = f_id;
@@ -54,13 +54,13 @@ fn part2(input: &str) -> u64 {
                         // println!("> {:?}", space_sizes[next_space_val]);
                         for i in 0..file_size {
                             pointers
-                                .swap(space_sizes[next_space_val].0 as usize + i as usize, right);
+                                .swap(space_sizes[next_space_val].0 + i as usize, right);
                             right -= 1;
                         }
                         right += 1;
-                        if file_size < space_sizes[next_space_val].1 as u32 {
+                        if file_size < space_sizes[next_space_val].1 {
                             let pos = space_sizes[next_space_val].0 as u32 + file_size;
-                            let size = space_sizes[next_space_val].1 as u32 - file_size;
+                            let size = space_sizes[next_space_val].1 - file_size;
                             // println!("XXXX {:?}", (pos as usize, size));
                             space_sizes.remove(next_space_val);
                             space_sizes.insert(next_space_val, (pos as usize, size));
@@ -80,7 +80,7 @@ fn part2(input: &str) -> u64 {
             checksum += pointers[i] as u64 * i as u64;
         }
     }
-    return checksum;
+    checksum
 }
 
 fn part1(input: &str) -> u64 {
@@ -88,7 +88,7 @@ fn part1(input: &str) -> u64 {
     let mut is_file = true;
     let mut file_id = 0;
     let mut pointers: Vec<isize> = Vec::new();
-    for e in disk_map.chars().into_iter() {
+    for e in disk_map.chars() {
         let blocks = e.to_digit(10).unwrap();
         // print!("b> {}", blocks);
         for _ in 0..blocks {
@@ -123,13 +123,13 @@ fn part1(input: &str) -> u64 {
             checksum += pointers[i] as u64 * i as u64;
         }
     }
-    return checksum;
+    checksum
 }
 
 #[test]
 fn test_part1_sample() {
     let input = "2333133121414131402";
-    let result = part1(&input);
+    let result = part1(input);
     println!("Result {:?}", result);
     assert_eq!(result, 1928);
 }
@@ -137,7 +137,7 @@ fn test_part1_sample() {
 #[test]
 fn test_part2_sample() {
     let input = "2333133121414131402994422";
-    let result = part2(&input);
+    let result = part2(input);
     println!("Result {:?}", result);
     assert_eq!(result, 2858);
 }

@@ -1,7 +1,6 @@
 use std::fs;
 
 pub fn read_input(year: u16, day: u8) -> String {
-    
     fs::read_to_string(format!("./input/{year}-day-{:02}.txt", day))
         .expect("Should have been able to read the file")
 }
@@ -40,14 +39,14 @@ pub fn as_grid_of_char(input: &str) -> Vec<Vec<char>> {
         .collect::<Vec<Vec<char>>>()
 }
 
-pub fn print_grid(grid: &Vec<Vec<char>>) {
+pub fn print_grid(grid: &[Vec<char>]) {
     for row in grid.iter() {
         let x: String = row.iter().collect();
         println!("{}", x);
     }
 }
 
-pub fn find_in_grid(grid: &Vec<Vec<char>>, character: char) -> Option<(usize, usize)> {
+pub fn find_in_grid(grid: &[Vec<char>], character: char) -> Option<(usize, usize)> {
     for (i, r) in grid.iter().enumerate() {
         for (j, c) in r.iter().enumerate() {
             if *c == character {

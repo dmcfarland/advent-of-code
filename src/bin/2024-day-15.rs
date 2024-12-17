@@ -121,7 +121,7 @@ fn part1(input: &str) -> usize {
         }
     }
 
-    return sum;
+    sum
 }
 
 fn part2_double_map(input: &str) -> String {
@@ -130,7 +130,7 @@ fn part2_double_map(input: &str) -> String {
     doubled = doubled.replace("O", "[]");
     doubled = doubled.replace(".", "..");
     doubled = doubled.replace("@", "@.");
-    return doubled;
+    doubled
 }
 
 fn part2(input: &str) -> usize {
@@ -222,7 +222,7 @@ fn part2(input: &str) -> usize {
                 row_moves.push(current);
             }
 
-            let row_shifts = row_moves.iter().filter(|p| p.len() > 0).count();
+            let row_shifts = row_moves.iter().filter(|p| !p.is_empty()).count();
 
             if row_shifts > 0 {
                 for r in 0..row_moves.len() {
@@ -264,7 +264,7 @@ fn part2(input: &str) -> usize {
                 row_moves.push(current);
             }
 
-            let row_shifts = row_moves.iter().filter(|p| p.len() > 0).count();
+            let row_shifts = row_moves.iter().filter(|p| !p.is_empty()).count();
 
             if row_shifts > 0 {
                 for rx in 0..row_moves.len() {
@@ -290,7 +290,7 @@ fn part2(input: &str) -> usize {
         }
     }
 
-    return sum;
+    sum
 }
 
 #[test]
@@ -316,7 +316,7 @@ vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
 <><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>
 ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
 v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"#;
-    let result = part1(&input);
+    let result = part1(input);
     println!("Counts {:?}", result);
     assert_eq!(result, 10092);
 }
@@ -344,7 +344,7 @@ vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v
 <><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>
 ^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>
 v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"#;
-    let result = part2(&part2_double_map(&input));
+    let result = part2(&part2_double_map(input));
     println!("Counts {:?}", result);
     assert_eq!(result, 9021);
 }

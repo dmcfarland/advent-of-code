@@ -1,7 +1,7 @@
 use advent_of_code::*;
 
 fn main() {
-    let input = read_input(2024, 12);
+    let input = read_input(2024, 18);
     let part1_result = part1(&input);
     println!("Part 1: {}", part1_result);
 

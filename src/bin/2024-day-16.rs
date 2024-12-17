@@ -55,10 +55,8 @@ fn part1(input: &str) -> u32 {
         let mut pruned_routes: Vec<Route> = Vec::new();
 
         for r in routes.into_iter() {
-            if pruned_routes
-                .iter()
-                .find(|p| p.trail.contains(&r.head))
-                .is_none()
+            if !pruned_routes
+                .iter().any(|p| p.trail.contains(&r.head))
             {
                 pruned_routes.push(r);
             }
@@ -80,7 +78,7 @@ fn part1(input: &str) -> u32 {
             }
             for instruction in instructions
                 .iter()
-                .filter(|i| &inverse[i.0] != &route.value)
+                .filter(|i| inverse[i.0] != route.value)
             {
                 let next = (
                     (instruction.1 .0 + route.head.0 as isize) as usize,
@@ -110,14 +108,14 @@ fn part1(input: &str) -> u32 {
             }
         }
         routes.append(&mut next_routes);
-        routes.sort_by(|a, b| a.score().cmp(&b.score()));
+        routes.sort_by_key(|a| a.score());
     }
 
     if let Some(r) = routes.first() {
         return r.score();
     }
 
-    return 0;
+    0
 }
 
 fn part2(input: &str) -> u32 {
@@ -154,10 +152,8 @@ fn part2(input: &str) -> u32 {
         let mut pruned_routes: Vec<Route> = Vec::new();
 
         for r in routes.into_iter() {
-            if pruned_routes
-                .iter()
-                .find(|p| p.trail.contains(&r.head) && p.head != r.head)
-                .is_none()
+            if !pruned_routes
+                .iter().any(|p| p.trail.contains(&r.head) && p.head != r.head)
             {
                 pruned_routes.push(r);
             }
@@ -183,7 +179,7 @@ fn part2(input: &str) -> u32 {
             }
             for instruction in instructions
                 .iter()
-                .filter(|i| &inverse[i.0] != &route.value)
+                .filter(|i| inverse[i.0] != route.value)
             {
                 let next = (
                     (instruction.1 .0 + route.head.0 as isize) as usize,
@@ -213,7 +209,7 @@ fn part2(input: &str) -> u32 {
             }
         }
         routes.append(&mut next_routes);
-        routes.sort_by(|a, b| a.score().cmp(&b.score()));
+        routes.sort_by_key(|a| a.score());
         println!("Step {:?} | routes: {}", i, routes.len());
     }
 
@@ -242,7 +238,7 @@ fn part2(input: &str) -> u32 {
 
     print_grid(&grid);
 
-    return 0;
+    0
 }
 
 #[test]
@@ -262,7 +258,7 @@ fn test_part1_sample1() {
 #.###.#.#.#.#.#
 #S..#.....#...#
 ###############"#;
-    let result = part1(&input);
+    let result = part1(input);
     assert_eq!(result, 7036);
 }
 
@@ -285,7 +281,7 @@ fn test_part1_sample2() {
 #.#.#.#########.#
 #S#.............#
 #################"#;
-    let result = part1(&input);
+    let result = part1(input);
     assert_eq!(result, 11048);
 }
 
@@ -306,7 +302,7 @@ fn test_part2_sample1() {
 #.###.#.#.#.#.#
 #S..#.....#...#
 ###############"#;
-    let result = part2(&input);
+    let result = part2(input);
 
     assert_eq!(result, 45);
 }
@@ -330,6 +326,6 @@ fn test_part2_sample2() {
 #.#.#.#########.#
 #S#.............#
 #################"#;
-    let result = part2(&input);
+    let result = part2(input);
     assert_eq!(result, 64);
 }

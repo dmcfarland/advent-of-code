@@ -35,16 +35,16 @@ fn as_grid(input: &str) -> Grid {
         }
     }
 
-    return Grid {
+    Grid {
         matrix: grid,
         rows: row_count,
         columns: column_count,
         start_pos: initial,
-    };
+    }
 }
 
 fn part1(grid: &Grid) -> u16 {
-    return part_x(&grid).0;
+    part_x(grid).0
 }
 
 fn part_x(grid: &Grid) -> (u16, u16) {
@@ -96,7 +96,7 @@ fn part_x(grid: &Grid) -> (u16, u16) {
             Direction::LEFT => c -= 1,
         }
     }
-    return (steps, incrementor);
+    (steps, incrementor)
 }
 
 fn part2(grid: &Grid) -> u16 {
@@ -113,7 +113,7 @@ fn part2(grid: &Grid) -> u16 {
         }
     }
 
-    return loops;
+    loops
 }
 
 #[derive(Debug)]
@@ -140,7 +140,7 @@ mod tests {
 ........#.
 #.........
 ......#..."#;
-        let grid = as_grid(&input);
+        let grid = as_grid(input);
         let result = part1(&grid);
         println!("Counts {:?}", result);
         assert_eq!(result, 41);
@@ -158,7 +158,7 @@ mod tests {
 ........#.
 #.........
 ......#..."#;
-        let grid = as_grid(&input);
+        let grid = as_grid(input);
         let result = part2(&grid);
         println!("Counts {:?}", result);
         assert_eq!(result, 6);
