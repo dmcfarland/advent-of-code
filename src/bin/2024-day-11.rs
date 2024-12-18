@@ -3,14 +3,14 @@ use std::collections::HashMap;
 
 fn main() {
     let input = read_input(2024, 11);
-    let part1_result = part1(&input, 25);
+    let part1_result = partx(&input, 25);
     println!("Part 1: {}", part1_result);
 
-    // let part2_result = part2(&input);
-    // println!("Part 2: {}", part2_result);
+    let part1_result = partx(&input, 75);
+    println!("Part 2: {}", part1_result);
 }
 
-fn part1(input: &str, blinks: u32) -> u64 {
+fn partx(input: &str, blinks: u32) -> u64 {
     let stones = input
         .lines()
         .next()
@@ -19,47 +19,32 @@ fn part1(input: &str, blinks: u32) -> u64 {
         .map(|v| v.parse::<u64>())
         .collect::<Result<Vec<u64>, _>>()
         .unwrap();
-
-    let mut lookup: HashMap<u64, Vec<u64>> = HashMap::new();
-    for i in 0..10 {
-        lookup.insert(i, build_lookup(vec![i], 40));
-    }
-
-    count_stones(stones, blinks, lookup)
+    count_stones(stones, blinks)
 }
 
-fn build_lookup(initial_stones: Vec<u64>, blinks: u32) -> Vec<u64> {
-    let mut stonez: Vec<u64> = initial_stones.clone();
-    let mut num_stones: Vec<u64> = Vec::new();
-    for _ in 0..blinks {
-        stonez = stonez.iter().flat_map(|&f| apply_rule(f)).collect();
-        num_stones.push(stonez.len() as u64);
-        // println!("{:?} || {} -- {}", stonez, stonez.len(), i);
-    }
-    println!("lookup: {:?}", initial_stones);
-    num_stones
-}
+fn count_stones(initial_stones: Vec<u64>, blinks: u32) -> u64 {
+    let mut stone_map: HashMap<u64, u64> = HashMap::new();
+    initial_stones.iter().for_each(|s| {
+        stone_map.entry(*s).and_modify(|c| *c += 1).or_insert(1);
+    });
 
-fn count_stones(initial_stones: Vec<u64>, blinks: u32, lookup: HashMap<u64, Vec<u64>>) -> u64 {
-    let mut stonez: Vec<u64> = initial_stones.clone();
-    let mut total = 0;
     for i in 0..blinks {
-        stonez = stonez
-            .iter()
-            .flat_map(|&f| {
-                if let Some(r) = lookup.get(&f) {
-                    println!("r{:?}", r);
-                    total += r[(blinks - i - 1) as usize];
-                    Vec::new()
-                } else {
-                    apply_rule(f)
-                }
-            })
-            .collect();
-        // println!("{:?} || {} -- {} ({})", stonez, stonez.len(), i, total);
-        println!("blink: {}", i);
+        let mut new_stone_map: HashMap<u64, u64> = HashMap::new();
+        for k in stone_map.keys() {
+            let new_stones = apply_rule(*k);
+            let current_stone_count = stone_map[k];
+            for stone in new_stones {
+                new_stone_map
+                    .entry(stone)
+                    .and_modify(|c| *c += current_stone_count)
+                    .or_insert(current_stone_count);
+            }
+        }
+        stone_map = new_stone_map;
+        // println!("blink: {} | {:?}", i, stone_map.len());
     }
-    total + (stonez.len() as u64)
+
+    return stone_map.values().sum();
 }
 
 fn apply_rule(f: u64) -> Vec<u64> {
@@ -89,7 +74,7 @@ fn apply_rule(f: u64) -> Vec<u64> {
 #[test]
 fn test_part1_b() {
     let input = r#"125 17"#;
-    let result = part1(input, 25);
+    let result = partx(input, 25);
     println!("Counts {:?}", result);
     assert_eq!(result, 55312);
 }

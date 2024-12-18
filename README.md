@@ -2,6 +2,8 @@
 
 Progress with https://adventofcode.com/
 
+Early on journey with Rust, so code is likely not idomatic.
+
 # Running samples as tests
 ```
 cargo test --bin 2024-day-01 -- --nocapture
@@ -17,7 +19,7 @@ cargo run --bin 2024-day-01
 ✅ Works •
 🐌 Slow •
 🎲 Guessed •
-⛔ Broken •
+📚 Used Guidance •
 ⭕ Not started •
 🚧 In Progress
 
@@ -32,12 +34,12 @@ cargo run --bin 2024-day-01
 | 07  |   🚧   |   🚧  | Broken     |
 | 08  |   ✅   |   ✅  |      |
 | 09  |   🐌   |   ✅  | Part 1 17s     |
-| 10  |   ✅   |   ⭕  |      |
-| 11  |   🐌   |   ⭕  | Part 1 36s     |
-| 12  |   ⭕   |   ⭕  |      |
-| 13  |   🚧   |   ⭕  | Started      |
-| 14  |   ✅   |   ✅  |      |
+| 10  |   ✅   |   ✅  |  |
+| 11  |   ✅   |   ✅  |      |
+| 12  |   ✅   |   ⭕  |      |
+| 13  |   ✅   | ✅ 📚 | [Reddit](https://www.reddit.com/r/adventofcode/comments/1hd7irq/2024_day_13_an_explanation_of_the_mathematics/)
+| 14  |   ✅   | ✅ 📚 | Reddit comment on all robots are on unique locations    |
 | 15  |   ✅   |   ✅  |      |
-| 16  |   🐌   |   🐌 🎲  | Part 1 - 8s, Part 2 - [6m58s & guessed pruning offset] |
-| 17  |   ✅   |   🐌 🎲  | Part 2 - [14s, Guessed at initial offset]    |
+| 16  |   🐌   | 🐌 🎲 | Part 1 - 8s, Part 2 - [6m58s & guessed pruning offset] |
+| 17  |   ✅   | 🐌 🎲 | Part 2 - [14s, Guessed at initial offset]    |
 | 18  |   ✅   |   🐌  |      |
