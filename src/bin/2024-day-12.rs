@@ -1,5 +1,5 @@
 use advent_of_code::*;
-use std::collections::HashSet;
+use std::{collections::HashSet, fmt::Debug};
 
 fn main() {
     let input = read_input(2024, 12);
@@ -11,7 +11,11 @@ fn main() {
 }
 
 fn part2(input: &str) -> u64 {
-    todo!()
+    return partx(input, calculate_edges);
+}
+
+fn part1(input: &str) -> u64 {
+    return partx(input, calculate_perimeter);
 }
 
 fn potential_next_locations(
@@ -38,7 +42,7 @@ fn potential_next_locations(
     return next_locations;
 }
 
-fn part1(input: &str) -> u64 {
+fn partx(input: &str, edgesFn: EdgesFunction) -> u64 {
     let grid = as_grid_of_char(input);
     let mut processed: Vec<(usize, usize)> = Vec::new();
 
@@ -72,25 +76,16 @@ fn part1(input: &str) -> u64 {
                         .collect();
                 }
 
-                let perimeter: usize = block
-                    .iter()
-                    .map(|cell| {
-                        let touches = potential_next_locations(&grid, &(cell.0, cell.1))
-                            .iter()
-                            .filter(|pt| block.contains(pt))
-                            .count();
-                        4 - touches
-                    })
-                    .sum();
+                let edges = edgesFn(&grid, &block);
 
                 println!(
-                    "Cell: {}, perimeter: {}, block_len:{}, blocks: {:?}",
+                    "Cell: {}, edges: {}, block_len:{}, blocks: {:?}",
                     cell,
-                    perimeter,
+                    edges,
                     block.len(),
                     block
                 );
-                cost += (perimeter * block.len()) as u64;
+                cost += (edges * block.len()) as u64;
             }
         });
     });
@@ -98,29 +93,104 @@ fn part1(input: &str) -> u64 {
     return cost;
 }
 
+type EdgesFunction = fn(grid: &Vec<Vec<char>>, &Vec<(usize, usize)>) -> usize;
+
+fn calculate_perimeter(grid: &Vec<Vec<char>>, block: &Vec<(usize, usize)>) -> usize {
+    return block
+        .iter()
+        .map(|cell| {
+            let touches = potential_next_locations(&grid, &(cell.0, cell.1))
+                .iter()
+                .filter(|pt| block.contains(pt))
+                .count();
+            4 - touches
+        })
+        .sum();
+}
+
+fn calculate_edges(grid: &Vec<Vec<char>>, block: &Vec<(usize, usize)>) -> usize {
+    let mut block = block.clone();
+    block.sort_by(|a, b| (a.0 + a.1).cmp(&(b.0 + b.1)));
+    let first = block.first().unwrap();
+    let last = block.last().unwrap();
+
+    let mut full_block: Vec<(usize, usize)> = Vec::new();
+    for r in first.0..=last.0 {
+        for c in first.1..=last.1 {
+            full_block.push((r, c));
+        }
+    }
+
+    let mut empty_block = full_block.clone();
+
+    empty_block.retain(|f| !block.contains(f));
+
+    let add_edges: usize = empty_block
+        .iter()
+        .map(|f| {
+            let locs = potential_next_locations(&grid, &f);
+            let o = locs.iter().filter(|l| block.contains(l)).count();
+            println!("{:?} => {}", f, o);
+            if o > 1 {
+                o
+            } else {
+                0
+            }
+        })
+        .sum();
+    println!("first: {:?} last: {:?} block: {:?}", first, last, block);
+    println!("f_block: {:?}", full_block);
+    println!("e_block: {:?}", empty_block);
+
+    return 4 + add_edges;
+}
+
 #[test]
-fn test_part1_sample1() {
+fn test_part2_sample1() {
     let input = r#"AAAA
     BBCD
     BBCC
     EEEC"#;
-    let result = part1(&left_trim_lines(input));
-    assert_eq!(result, 140);
+    let result = part2(&left_trim_lines(input));
+    assert_eq!(result, 80);
+}
+
+#[test]
+fn test_part2_sample2() {
+    let input = r#"OOOOO
+    OXOXO
+    OOOOO
+    OXOXO
+    OOOOO"#;
+    let result = part2(&left_trim_lines(input));
+    assert_eq!(result, 436);
 }
 
 // #[test]
-// fn test_part1_sample2() {
-//     let input = r#"OOOOO
-//     OXOXO
-//     OOOOO
-//     OXOXO
-//     OOOOO"#;
-//     let result = part1(&left_trim_lines(input));
-//     assert_eq!(result, 772);
+// fn test_part2_sample3() {
+//     let input = r#"EEEEE
+//     EXXXX
+//     EEEEE
+//     EXXXX
+//     EEEEE"#;
+//     let result = part2(&left_trim_lines(input));
+//     assert_eq!(result, 236);
 // }
 
 // #[test]
-// fn test_part1_sample3() {
+// fn test_part2_sample4() {
+//     let input = r#"AAAAAA
+//     AAABBA
+//     AAABBA
+//     ABBAAA
+//     ABBAAA
+//     AAAAAA"#;
+//     let result = part2(&left_trim_lines(input));
+//     assert_eq!(result, 368);
+// }
+
+// #[test]
+// fn test_part2_sample5() {
 //     let input = r#"RRRRIICCFF
 //     RRRRIICCCF
 //     VVRRRCCFFF
@@ -132,5 +202,42 @@ fn test_part1_sample1() {
 //     MIIISIJEEE
 //     MMMISSJEEE"#;
 //     let result = part1(&left_trim_lines(input));
-//     assert_eq!(result, 1930);
+//     assert_eq!(result, 1206);
 // }
+
+#[test]
+fn test_part1_sample1() {
+    let input = r#"AAAA
+    BBCD
+    BBCC
+    EEEC"#;
+    let result = part1(&left_trim_lines(input));
+    assert_eq!(result, 140);
+}
+
+#[test]
+fn test_part1_sample2() {
+    let input = r#"OOOOO
+    OXOXO
+    OOOOO
+    OXOXO
+    OOOOO"#;
+    let result = part1(&left_trim_lines(input));
+    assert_eq!(result, 772);
+}
+
+#[test]
+fn test_part1_sample3() {
+    let input = r#"RRRRIICCFF
+    RRRRIICCCF
+    VVRRRCCFFF
+    VVRCCCJFFF
+    VVVVCJJCFE
+    VVIVCCJJEE
+    VVIIICJJEE
+    MIIIIIJJEE
+    MIIISIJEEE
+    MMMISSJEEE"#;
+    let result = part1(&left_trim_lines(input));
+    assert_eq!(result, 1930);
+}
