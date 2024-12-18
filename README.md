@@ -40,4 +40,4 @@ cargo run --bin 2024-day-01
 | 15  |   ✅   |   ✅  |      |
 | 16  |   🐌   |   🐌 🎲  | Part 1 - 8s, Part 2 - [6m58s & guessed pruning offset] |
 | 17  |   ✅   |   🐌 🎲  | Part 2 - [14s, Guessed at initial offset]    |
-| 18  |      |     |      |
+| 18  |   ✅   |   🐌  |      |
