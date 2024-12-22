@@ -56,3 +56,17 @@ pub fn find_in_grid(grid: &[Vec<char>], character: char) -> Option<(usize, usize
     }
     None
 }
+
+pub fn find_in_grid_x<T>(grid: &[T], character: char) -> Option<(usize, usize)>
+where
+    T: AsRef<[char]>,
+{
+    for (i, row) in grid.iter().enumerate() {
+        for (j, &c) in row.as_ref().iter().enumerate() {
+            if c == character {
+                return Some((j, i));
+            }
+        }
+    }
+    None
+}
