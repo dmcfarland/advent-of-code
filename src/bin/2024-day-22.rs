@@ -10,7 +10,6 @@ fn main() {
 
     let part2_result = part2(&input);
     println!("Part 2: {}", part2_result);
-    // 1459 too low
 }
 
 fn part1(input: &str) -> usize {
