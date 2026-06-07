@@ -4,8 +4,8 @@ use advent_of_code::*;
 
 fn main() {
     let input = read_input(2025, 1);
-    // let part1_result = part1(&input);
-    // println!("Part 1: {}", part1_result);
+    let part1_result = part1(&input);
+    println!("Part 1: {}", part1_result);
 
     let part2_result = part2(&input);
     println!("Part 2: {}", part2_result);
@@ -44,9 +44,12 @@ fn part1(input: &str) -> u32 {
 
 // 6796,6790 - too high
 // 5000 - too low
+// 6789
 fn part2(input: &str) -> u32 {
     let mut index: i32 = 50;
+    let mut previousIndex: i32 = -1;
     let mut password: u32 = 0;
+
     let mut i = 0;
     input.lines().for_each(|line| {
         let mut chars = line.chars();
@@ -61,13 +64,18 @@ fn part2(input: &str) -> u32 {
         };
         if index < 0 {
             index = 100 + index;
-            password += 1;
-        }
-        if index > 99 {
+            if previousIndex != 0 {
+                password += 1;
+            }
+        } else if index > 99 {
             index = index - 100;
+            if previousIndex != 0 {
+                password += 1;
+            }
+        } else if index == 0 && previousIndex != 0 {
             password += 1;
         }
-
+        previousIndex = index;
         password += (incx / 100) as u32;
 
         println!("{}|{:?}{}: {} ({})", i, dir, incx, index, password);
